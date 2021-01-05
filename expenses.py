@@ -50,15 +50,12 @@ def get_today_statistics() -> str:
         return "Сегодня ещё нет расходов"
     all_today_expenses = result[0]
     cursor.execute("select sum(amount) "
-                   "from expense where date(created)=date('now', 'localtime') "
-                   "and category_codename in (select codename "
-                   "from category where is_base_expense=true)")
+                   "from expense where date(created)=date('now', 'localtime') ")
     result = cursor.fetchone()
-    base_today_expenses = result[0] if result[0] else 0
     return (f"Расходы сегодня:\n"
-            f"всего — {all_today_expenses} руб.\n"
-            f"базовые — {base_today_expenses} руб. из {_get_budget_limit()} руб.\n\n"
-            f"За текущий месяц: /month")
+            f"{all_today_expenses} руб.\n\n"
+            f"За текущий месяц: /month \n"
+            f"Последние расходы: /expenses")
 
 
 def get_month_statistics() -> str:
@@ -73,15 +70,10 @@ def get_month_statistics() -> str:
         return "В этом месяце ещё нет расходов"
     all_today_expenses = result[0]
     cursor.execute(f"select sum(amount) "
-                   f"from expense where date(created) >= '{first_day_of_month}' "
-                   f"and category_codename in (select codename "
-                   f"from category where is_base_expense=true)")
+                   f"from expense where date(created) >= '{first_day_of_month}' ")
     result = cursor.fetchone()
-    base_today_expenses = result[0] if result[0] else 0
     return (f"Расходы в текущем месяце:\n"
-            f"всего — {all_today_expenses} руб.\n"
-            f"базовые — {base_today_expenses} руб. из "
-            f"{now.day * _get_budget_limit()} руб.")
+            f"{all_today_expenses} руб.")
 
 
 def last() -> List[Expense]:
@@ -104,12 +96,12 @@ def delete_expense(row_id: int) -> None:
 
 def _parse_message(raw_message: str) -> Message:
     """Парсит текст пришедшего сообщения о новом расходе."""
-    regexp_result = re.match(r"([\d ]+) (.*)", raw_message)
+    regexp_result = re.match(r"([0-9]*[.,]?[0-9]+) (.*)", raw_message)
     if not regexp_result or not regexp_result.group(0) \
             or not regexp_result.group(1) or not regexp_result.group(2):
         raise exceptions.NotCorrectMessage(
             "Не могу понять сообщение. Напишите сообщение в формате, "
-            "например:\n1500 метро")
+            "например:\n2 метро")
 
     amount = regexp_result.group(1).replace(" ", "")
     category_text = regexp_result.group(2).strip().lower()
@@ -127,7 +119,3 @@ def _get_now_datetime() -> datetime.datetime:
     now = datetime.datetime.now(tz)
     return now
 
-
-def _get_budget_limit() -> int:
-    """Возвращает дневной лимит трат для основных базовых трат"""
-    return db.fetchall("budget", ["daily_limit"])[0]["daily_limit"]

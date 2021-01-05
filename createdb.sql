@@ -1,12 +1,6 @@
-create table budget(
-    codename varchar(255) primary key,
-    daily_limit integer
-);
-
 create table category(
     codename varchar(255) primary key,
     name varchar(255),
-    is_base_expense boolean,
     aliases text
 );
 
@@ -19,18 +13,21 @@ create table expense(
     FOREIGN KEY(category_codename) REFERENCES category(codename)
 );
 
-insert into category (codename, name, is_base_expense, aliases)
+insert into category (codename, name, aliases)
 values
-    ("products", "продукты", true, "еда"),
-    ("coffee", "кофе", true, ""),
-    ("dinner", "обед", true, "столовая, ланч, бизнес-ланч, бизнес ланч"),
-    ("entertainment", "развлечения", true, "развлечения, ресторан, рест, кафе, кино"),
-    ("transport", "транспорт", false, "транспорт, метро, автобус, metro, такси, taxi"),
-    ("phone", "телефон", false, "теле2, связь, телефон"),
-    ("books", "книги", false, "литература, литра, лит-ра"),
-    ("internet", "интернет", false, "инет, inet"),
-    ("subscriptions", "подписки", false, "подписка"),
-    ("other", "прочее", true, "");
-
-
-insert into budget(codename, daily_limit) values ('base', 50);
+    ("transport", "транспорт", "транспорт, метро, автобус, metro, такси, taxi"),
+    ("business", "бизнес", "налоги, зарплата, реклама, офис, канцелярия, услуги"),
+    ("gifts", "благотворительность", "помощь, подарки, пожертвования"),
+    ("products", "продукты", "еда, продукты"),
+    ("entertainment", "развлечения", "развлечения, ресторан, рест, кафе, кино, кофе"),
+    ("utilities", "квартира и связь", "квартира, электричество, вода, тепло, газ, радио, телефон, интернет, аренда, вывоз мусора, кабельное телевидение, охрана, телефон"),
+    ("home", "дом", "белье, мебель, интерьер, посуда, кухня, ванная"),
+    ("credits", "кредиты", "рассрочка, кредит"),
+    ("leisure", "досуг", "танцы, английский, тренажёрный зал, качалка"),
+    ("dinner", "обед", "столовая, ланч, бизнес-ланч, бизнес ланч"),
+    ("childrens", "дети", "одежда, питание, игрушки, книги, няня, мебель, услуги, развлечения"),
+    ("health", "здоровье и красота", "косметика, парфюмерия, лекарства, барбер, ногти, парикмахерская"),
+    ("tax", "налоги и страховка", "налог, страховка"),
+    ("clothes", "одежда", "одежда, аксесуары, бижутерия, браслет, серьги"),
+    ("knowledge", "образование", "образование, учеба"),
+    ("other", "прочее", "");

@@ -43,8 +43,11 @@ def get_cursor():
 
 
 def _init_db():
-    """Инициализирует БД"""
-    with open("createdb.sql", "r") as f:
+    """
+        Инициализирует БД
+        /opt/apps/finance-bot/createdb.sql
+    """
+    with open("/opt/apps/finance-bot/createdb.sql", "r") as f:
         sql = f.read()
     cursor.executescript(sql)
     conn.commit()
