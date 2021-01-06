@@ -48,7 +48,7 @@ def get_today_statistics() -> str:
     result = cursor.fetchone()
     if not result[0]:
         return "Сегодня ещё нет расходов"
-    all_today_expenses = result[0]
+    all_today_expenses = round(result[0], 2)
     cursor.execute("select sum(amount) "
                    "from expense where date(created)=date('now', 'localtime') ")
     result = cursor.fetchone()
@@ -68,7 +68,7 @@ def get_month_statistics() -> str:
     result = cursor.fetchone()
     if not result[0]:
         return "В этом месяце ещё нет расходов"
-    all_today_expenses = result[0]
+    all_today_expenses = round(result[0], 2)
     cursor.execute(f"select sum(amount) "
                    f"from expense where date(created) >= '{first_day_of_month}' ")
     result = cursor.fetchone()
