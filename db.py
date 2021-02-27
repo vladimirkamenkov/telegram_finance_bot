@@ -2,8 +2,8 @@ import os
 from typing import Dict, List, Tuple
 
 import sqlite3
-# /opt/apps/finance-bot/
-conn = sqlite3.connect("finance.db")
+
+conn = sqlite3.connect("/opt/apps/finance-bot/finance.db")
 cursor = conn.cursor()
 
 
@@ -47,7 +47,7 @@ def _init_db():
         Инициализирует БД
         /opt/apps/finance-bot/createdb.sql
     """
-    with open("createdb.sql", "r") as f:
+    with open("/opt/apps/finance-bot/createdb.sql", "r") as f:
         sql = f.read()
     cursor.executescript(sql)
     conn.commit()
