@@ -3,8 +3,10 @@ import os
 
 import exceptions
 import expenses
+import db
 from categories import Categories
 
+from flask import Flask, json
 from aiogram import Bot, Dispatcher, executor, types
 
 
@@ -15,6 +17,8 @@ API_TOKEN = os.getenv("FINANCE_BOT_API_TOKEN")
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
+api = Flask(__name__)
 
 def auth(func):
     async def wrapper(message):
@@ -106,5 +110,14 @@ async def add_expense(message: types.Message):
     await message.answer(answer_message)
 
 
+@api.route('/expenses', methods=['GET'])
+def get_expenses():
+    cursor = db.get_cursor()
+    cursor.execute("select * from expense limit 10")
+    rows = cursor.fetchall()
+    return json.dumps(rows)
+
+
 if __name__ == '__main__':
+    api.run()
     executor.start_polling(dp, skip_updates=True)

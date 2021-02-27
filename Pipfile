@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+aiogram = "*"
+aiohttp = "*"
+async-timeout = "*"
+attrs = "*"
+babel = "*"
+certifi = "*"
+chardet = "*"
+idna = "*"
+multidict = "*"
+pytz = "*"
+yarl = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
