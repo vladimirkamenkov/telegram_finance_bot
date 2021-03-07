@@ -76,6 +76,20 @@ def get_month_statistics() -> str:
             f"{all_today_expenses} руб.")
 
 
+def get_expenses_by_dates(start, end) -> List[Expense]:
+    """Возвращает последние несколько расходов"""
+    cursor = db.get_cursor()
+    cursor.execute(
+        "select e.id, e.amount, e.created, c.name "
+        "from expense e left join category c "
+        "on c.codename=e.category_codename "
+        f"where date(e.created) >= '{start}' and date(e.created) <= '{end}'"
+        "order by created desc")
+    rows = cursor.fetchall()
+    fetched_expenses = [{'id': row[0], 'amount': row[1], 'created': row[2], 'category': row[3]} for row in rows]
+    return fetched_expenses
+
+
 def last() -> List[Expense]:
     """Возвращает последние несколько расходов"""
     cursor = db.get_cursor()

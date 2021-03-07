@@ -11,4 +11,4 @@ COPY createdb.sql ./
 ENTRYPOINT ["python", "server.py"]
 
 # docker build -t tgfinance ./
-# docker run -d --name tg -v /Users/kamenkov/Docs/work/telegram_finance_bot/db:/home/db tgfinance
+# docker run -d --name tg -v /opt/db:/home/db -p 5000:5000 tgfinance

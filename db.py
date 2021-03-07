@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 import sqlite3
 
-conn = sqlite3.connect(os.path.join("db", "finance.db"))
+conn = sqlite3.connect(os.path.join("db", "finance.db"), check_same_thread=False)
 cursor = conn.cursor()
 
 
